@@ -243,7 +243,7 @@
     <script>
         // to display blogs from db 
         function loadBlogs() {
-            fetch('http://localhost:3002/blogifyy/blogs')
+            fetch('/blogifyy/blogs')
                 .then(res => res.json())
                 .then(data => {
                     const container = document.getElementById('blogs');
@@ -270,7 +270,7 @@
 
             if (!topic || !content) return;
 
-            fetch('http://localhost:3002/blogifyy/blogs', {
+            fetch('/blogifyy/blogs', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ topic, content })
