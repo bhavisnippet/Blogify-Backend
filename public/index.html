@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blogify</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Base Theme */
+        body {
+            background: linear-gradient(135deg, #fdfbfb, #ebedee);
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            transition: background 0.4s, color 0.4s;
+            overflow-x: hidden;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+            color: #eee;
+        }
+
+        h1 {
+            font-weight: 800;
+            animation: fadeDown 1s ease;
+        }
+
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #6c63ff;
+            border: none;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        body.dark-mode .theme-toggle {
+            background: #ff9800;
+        }
+
+        /* Card (Form) */
+        .card-custom {
+            border: none;
+            border-radius: 15px;
+            background: #fff;
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s;
+        }
+
+        body.dark-mode .card-custom {
+            background: #2e2e48;
+            color: white;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            transition: 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #6c63ff;
+            box-shadow: 0px 0px 6px rgba(108, 99, 255, 0.5);
+        }
+
+        body.dark-mode .form-control {
+            background: #3a3a55;
+            border: 1px solid #555;
+            color: #fff;
+        }
+
+        body.dark-mode ::placeholder {
+            color: #bbb !important;
+            opacity: 1;
+        }
+
+        body.dark-mode .form-control {
+            color: #fff;
+        }
+
+        /* Button */
+        .btn-custom {
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-weight: 600;
+            background: linear-gradient(45deg, #6c63ff, #48c6ef);
+            border: none;
+            color: #fff;
+            transition: 0.3s;
+        }
+
+        .btn-custom:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 6px 15px rgba(108, 99, 255, 0.4);
+        }
+
+        body.dark-mode .btn-custom {
+            background: linear-gradient(45deg, #ff9800, #ff5722);
+        }
+
+        /* Blog Cards */
+        .blog-card {
+            border-radius: 15px;
+            padding: 20px;
+            background: #fff;
+            color: #333;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            animation: fadeUp 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .blog-card {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        body.dark-mode .blog-card {
+            background: #2e2e48;
+            color: #eee;
+            box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .blog-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #6c63ff;
+        }
+
+        body.dark-mode .blog-title {
+            color: #ffb74d;
+        }
+
+        .blog-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .blog-list-wrapper {
+            max-height: 75vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 0;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .blog-list-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .sticky-form {
+            position: sticky;
+            top: 90px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Theme Toggle -->
+    <button id="themeToggle" class="theme-toggle">🌙</button>
+
+    <div class="container py-5">
+        <h1 class="mb-5 text-center">🚀 Blogify: Share What's On Your Mind 🤔</h1>
+
+        <div class="row">
+            <!-- Left: Write Blog -->
+            <div class="col-lg-5 mb-4">
+                <div class="card card-custom p-4 sticky-form">
+                    <h4 class="card-title mb-4">📝 Write a Blog</h4>
+                    <form id="blogForm">
+                        <div class="mb-3">
+                            <label for="topic" class="form-label">Topic</label>
+                            <input type="text" class="form-control" id="topic" placeholder="Enter blog topic" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="content" class="form-label">Content</label>
+                            <textarea class="form-control" id="content" rows="6"
+                                placeholder="Write your blog content here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-custom">Publish</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right: Blog List -->
+            <div class="col-lg-7">
+                <div class="blog-list-wrapper">
+                    <div id="blogs" class="row g-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // to display blogs from db 
+        function loadBlogs() {
+            fetch('http://localhost:3002/blogifyy/blogs')
+                .then(res => res.json())
+                .then(data => {
+                    const container = document.getElementById('blogs');
+                    container.innerHTML = '';
+                    data.reverse().forEach((blog, index) => {
+                        const col = document.createElement('div');
+                        col.className = 'col-md-12';
+
+                        col.innerHTML = `
+              <div class="blog-card h-100" style="animation-delay: ${index * 0.15}s;">
+                <h5 class="blog-title">${blog.topic}</h5>
+                <p class="blog-text">${blog.content}</p>
+              </div>
+            `;
+                        container.appendChild(col);
+                    });
+                });
+        }
+
+        document.getElementById('blogForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const topic = document.getElementById('topic').value.trim();
+            const content = document.getElementById('content').value.trim();
+
+            if (!topic || !content) return;
+
+            fetch('http://localhost:3002/blogifyy/blogs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ topic, content })
+            })
+                .then(res => res.json())
+                .then(() => {
+                    document.getElementById('topic').value = '';
+                    document.getElementById('content').value = '';
+                    loadBlogs();
+                });
+        });
+
+        document.addEventListener('DOMContentLoaded', loadBlogs);
+
+        // Theme Toggle
+        const toggleBtn = document.getElementById('themeToggle');
+        toggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            toggleBtn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
