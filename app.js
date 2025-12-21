@@ -6,6 +6,8 @@ app.use(express.urlencoded({ extended: true }));
 const cors = require("cors");
 app.use(cors());
 require('dotenv').config();
+app.use(express.static('public'));
+
 
 // Connecting MongoDB With NodeJS
 const mongoose = require("mongoose");
