@@ -5,17 +5,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const cors = require("cors");
 app.use(cors());
-require('dotenv').config();
 app.use(express.static('public'));
-
-
+require('dotenv').config();
 // Connecting MongoDB With NodeJS
 const mongoose = require("mongoose");
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.error("MongoDB Connection Error:", err))
   
-// Blogify Model 
+// Blog Model 
 const Blog = require("./models/blog")  
     
 // GET Route
