@@ -23,7 +23,7 @@ app.get('/blogifyy/blogs', async (req, res) => {
     console.log("Data Feched!");
     res.status(200).json(response)
   } catch (error) {
-    console.log("Error fetching employee data");
+    console.log("Error fetching blog data");
     res.status(500).json("Internal server error", error);
   }
 })
@@ -37,7 +37,7 @@ app.post('/blogifyy/blogs', async (req, res) => {
     console.log("Data saved!");
     res.status(200).json(response);
   } catch (error) {
-    console.error("Error fetching employee data");
+    console.error("Error posting blog data");
     res.status(500).json("Inernal server error:", error); 
   }
 })
